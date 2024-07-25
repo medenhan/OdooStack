@@ -49,3 +49,64 @@ Our architecture consists of:
          Specifies that the stack creation process requires the CAPABILITY_IAM capability.
          This capability allows CloudFormation to create IAM resources (like roles and policies) on your behalf.
    Remember to replace the placeholder values (YourKeyPair, YourDBPassword, and YourOdooAdminPassword) with actual values specific to your environment. Once you execute this command, CloudFormation will start creating the stack based on your template! 🚀
+3. **Monitor Stack Creation**:
+- Use AWS Console or CLI to monitor the stack creation process.
+- This may take 15-20 minutes to complete.
+
+4. **Access Odoo**:
+- Once the stack is created, find the ALB DNS name in the Outputs section.
+- Access Odoo using this DNS name in your web browser.
+
+5. **Initialize Odoo**:
+- Follow the Odoo setup wizard to create your first database.
+
+## Key Components
+
+### VPC and Networking
+- Two public subnets in different Availability Zones for high availability.
+- Internet Gateway for public internet access.
+
+### EC2 and Auto Scaling
+- Launch Template defines the Odoo instance configuration.
+- Auto Scaling Group ensures at least two instances are running.
+
+### RDS Database
+- Managed PostgreSQL instance for data persistence.
+- Multi-AZ deployment for high availability.
+
+### Application Load Balancer
+- Distributes traffic across Odoo instances.
+- Performs health checks to ensure traffic is sent only to healthy instances.
+
+### Security
+- Security groups control traffic to EC2 and RDS instances.
+- RDS instance is not publicly accessible.
+
+## Customization and Scaling
+
+- Adjust the Auto Scaling group's minimum, maximum, and desired capacity as needed.
+- Modify the Launch Template to change instance types or add custom configurations.
+- Scale the RDS instance vertically as your database grows.
+
+## Cleanup
+
+To remove all created resources:
+
+1. Go to the CloudFormation console in AWS.
+2. Select the stack you created.
+3. Click "Delete" and confirm.
+4. Wait for all resources to be deleted.
+
+## Troubleshooting
+
+- If instances are unhealthy, check the Odoo logs: `sudo tail -f /var/log/odoo/odoo.log`
+- Verify RDS connectivity from EC2 instances.
+- Check security group rules if you can't access Odoo through the ALB.
+
+## Contributing
+
+Feel free to submit issues or pull requests to improve this deployment guide.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
